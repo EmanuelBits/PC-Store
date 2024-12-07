@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Store</title>
+  <script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
+  <style>
+    /* General Body Styling */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+      color: #333;
+    }
+  
+    /* Navbar Styling */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #0071c5, #76b900);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      color: white;
+      border-radius: 10px;
+    }
+
+    /* Navbar Title Styling */
+    .navbar .title {
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Courier New', Courier, monospace;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+      transition: transform 0.2s ease;
+    }
+
+    .navbar .title:hover {
+      transform: scale(1.1);
+    }
+
+    /* Navbar Button Styling (Cart and Profile) */
+    .navbar button {
+      background: linear-gradient(90deg, #005d9e, #0071c5);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .navbar button:hover {
+      background: linear-gradient(90deg, #00447a, #005b9e);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .navbar button:active {
+      transform: scale(0.95);
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      position: fixed;
+      top: 80px; /* Adjust based on navbar height */
+      left: 0;
+      width: 200px;
+      background: #ffffff;
+      padding: 20px;
+      box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 0 10px 10px 0;
+    }
+
+    .sidebar button {
+      display: block;
+      width: 100%;
+      background: #f0f0f0;
+      color: #333;
+      border: none;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar button.active {
+      background: linear-gradient(90deg, rgba(0, 112, 192, 0.7), rgba(118, 185, 0, 0.7));
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar button:hover {
+      background: linear-gradient(90deg, rgba(0, 112, 192, 0.3), rgba(118, 185, 0, 0.3));
+    }
+
+    .product-list {
+      margin-left: 220px; /* Sidebar width */
+      padding: 20px;
+    }
+
+    /* Cart and Profile */
+    .modal {
+      position: fixed;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 400px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      z-index: 1000;
+      text-align: center;
+    }
+
+    .modal-buttons button {
+      background: #0071c5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .modal-buttons button:hover {
+      background: #005b9e;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-buttons button:active {
+      transform: scale(0.95);
+    }
+    
+
+    /* Ripple Effect for Buttons */
+    .ripple {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple-expand 0.3s ease-out;
+    }
+
+    @keyframes ripple-expand {
+      to {
+        transform: scale(30);
+        opacity: 0;
+      }
+    }
+  
+    .navbar button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+    .navbar button:active {
+      transform: scale(0.95);
+    }
+  
+    /* Product Cards */
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+  
+    .product-card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      width: 220px;
+      text-align: center;
+      background-color: white;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+  
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+  
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  
+    .product-card button {
+      background-color: #0071c5;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+  
+    .product-card button:hover {
+      background-color: #005b9e;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+    .product-card button:active {
+      transform: scale(0.95);
+    }
+  
+    /* Highlight Effect */
+    .highlight {
+      animation: highlight-bounce 0.5s ease-out;
+    }
+
+    @keyframes highlight-bounce {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.3);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  
+    @keyframes cart-bounce {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.3);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  
+    /* Modal */
+    .modal {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+    }
+
+    .ripple {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple-expand 0.3s ease-out;
+    }
+
+    @keyframes ripple-expand {
+      to {
+        transform: scale(30);
+        opacity: 0;
+      }
+    }
+
+    .highlight {
+      animation: pop 0.3s ease-out;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Balance Display */
+    .balance {
+      font-size: 16px;
+      font-weight: bold;
+      margin-right: 20px;
+      background: rgba(0, 0, 0, 0.1);
+      padding: 5px 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Login Modal */
+    .login-modal {
+      width: 300px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .login-modal h2 {
+      margin-bottom: 20px;
+    }
+
+    .login-modal input {
+      width: calc(100% - 20px);
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login-modal button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      background: linear-gradient(90deg, #0071c5, #76b900);
+      color: white;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .login-modal .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    /* Overlay Styling */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    /* Notifications */
+    .notification-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .notification {
+      padding: 10px 15px;
+      background-color: #0071c5;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.5s, fadeOut 0.5s 2.5s;
+    }
+
+    .notification.success {
+      background-color: #28a745; /* Green */
+    }
+
+    .notification.error {
+      background-color: #dc3545; /* Red */
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+    }
+  </style>
+</head>
+<body ng-app="PCStoreApp" ng-controller="MainController">
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <button class="cart-button special-effect" ng-click="viewCart()">🛒 Cart</button>
+    <div class="title" ng-click="goToMain()">PC Store</div>
+    <div class="balance" ng-show="isLoggedIn">Balance: {{balance | currency}}</div>
+    <button class="profile-button special-effect" ng-click="toggleProfileMenu()">
+      {{ isLoggedIn ? 'Logout' : 'Profile' }}
+    </button>    
+  </div>
+
+  <!-- Product Selector -->
+  <div class="sidebar">
+    <button 
+      ng-repeat="category in categories"
+      ng-click="selectCategory(category.value)"
+      ng-class="{'active': selectedCategory === category.value}"
+    >
+      {{category.name}}
+    </button>
+  </div>
+
+  <!-- Product List -->
+  <div class="product-list">
+    <div class="product-card" ng-repeat="product in filteredProducts">
+      <img ng-src="{{product.image}}" alt="{{product.name}}" />
+      <h3>{{product.name}}</h3>
+      <p>{{product.price | currency}}</p>
+      <button ng-click="addToCart(product)">Add to Cart</button>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal cart-modal" ng-show="showCart">
+    <h2>Your Cart</h2>
+    <div ng-repeat="item in cart">
+      <span>{{item.name}} - {{item.quantity}} x {{item.price | currency}}</span>
+      <span>Total: {{item.quantity * item.price | currency}}</span>
+    </div>    
+    <hr />
+    <p>Total: <strong>{{getTotalPrice() | currency}}</strong></p>
+    <div class="modal-buttons">
+      <button ng-click="checkout()">Checkout</button>
+      <button ng-click="closeCart()">Close</button>
+    </div>
+  </div>  
+
+  <!-- Profile Modal -->
+  <div class="modal" ng-show="showProfile">
+    <h2>Profile</h2>
+    <div ng-if="loggedIn">
+      <p>Orders:</p>
+      <ul>
+        <li ng-repeat="order in orders">
+          Order {{$index + 1}} - {{order.totalPrice | currency}}
+        </li>
+      </ul>
+      <p>Balance: {{userBalance | currency}}</p>
+      <button ng-click="logout()">Logout</button>
+    </div>
+    <div ng-if="!loggedIn">
+      <button ng-click="showLoginForm()">Login</button>
+    </div>
+    <button ng-click="closeProfileMenu()">Close</button>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="overlay" ng-show="showLogin"></div>
+  <div class="modal login-modal" ng-show="showLogin">
+    <h2>Login</h2>
+    <form ng-submit="login(username, password)">
+      <input type="text" ng-model="username" placeholder="Username" required />
+      <input type="password" ng-model="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <button type="button" ng-click="showLogin = false">Cancel</button>
+    </form>
+    <p class="error" ng-if="loginError">{{ loginError }}</p>
+  </div>
+
+  <!-- Notification Modal -->
+  <div class="notification-container" ng-if="notifications.length > 0">
+    <div class="notification {{notification.type}}" ng-repeat="notification in notifications">
+      {{notification.message}}
+    </div>
+  </div>  
+
+  <script>
+    angular.module('PCStoreApp', [])
+    .controller('MainController', function ($scope) {
+      // Initial State
+      $scope.selectedCategory = 'all';
+      $scope.showCart = false;
+      $scope.showProfile = false;
+      $scope.showLogin = false;
+      $scope.isLoggedIn = false;
+      $scope.cart = [];
+      $scope.orders = [];
+      $scope.loggedInUser = null;
+      $scope.loginError = '';
+
+      // Default Users Database
+      $scope.users = [
+        { username: 'john_doe', password: '12345', balance: 10000 },
+        { username: 'jane_doe', password: 'password', balance: 15000 },
+      ];
+
+      // Methods
+      $scope.filterProducts = function () {
+        if ($scope.selectedCategory === 'all') {
+          $scope.filteredProducts = $scope.products;
+        } else {
+          $scope.filteredProducts = $scope.products.filter(
+            product => product.category === $scope.selectedCategory
+          );
+        }
+      };
+
+      $scope.categories = [
+        { name: 'All Products', value: 'all' },
+        { name: 'CPU', value: 'cpu' },
+        { name: 'GPU', value: 'gpu' },
+        { name: 'Motherboards', value: 'motherboard' },
+        { name: 'RAM', value: 'ram' },
+      ];
+
+      $scope.selectCategory = function (categoryValue) {
+        $scope.selectedCategory = categoryValue;
+        $scope.filterProducts();
+      };
+
+      $scope.animateButton = function (buttonClass) {
+        const button = document.querySelector(buttonClass);
+        button.classList.add('highlight');
+        setTimeout(() => {
+          button.classList.remove('highlight');
+        }, 500);
+      };
+
+      // Cart and Orders
+      $scope.addToCart = function (product) {
+        const existingItem = $scope.cart.find(item => item.id === product.id);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          $scope.cart.push({ ...product, quantity: 1 });
+        }
+        $scope.notify(`${product.name} added to cart.`);
+        $scope.animateButton('.navbar button:first-child'); // Highlight Cart
+      };
+
+      $scope.removeFromCart = function (item) {
+        const index = $scope.cart.indexOf(item);
+        if (index > -1) {
+          $scope.cart.splice(index, 1);
+        }
+      };
+
+      $scope.getTotalPrice = function () {
+        return $scope.cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+      };
+
+      $scope.viewCart = function () {
+        $scope.showCart = true;
+        $scope.animateButton('.cart-button');
+      };
+
+      $scope.closeCart = function () {
+        $scope.showCart = false;
+      };
+
+      $scope.checkout = function () {
+        const totalPrice = $scope.getTotalPrice();
+        const order = {
+          totalPrice: totalPrice,
+          items: [...$scope.cart], // Clone the cart items
+        };
+        $scope.orders.push(order);
+        $scope.userBalance -= totalPrice;
+        $scope.cart = [];
+        $scope.showCart = false;
+
+        $scope.notify(`Order placed! Total: ${totalPrice | currency}`);
+      };
+
+      $scope.toggleProfileMenu = function () {
+        if (!$scope.isLoggedIn) {
+          $scope.showLogin = true;
+        } else {
+          $scope.showProfile = !$scope.showProfile;
+        }
+        $scope.animateButton('.profile-button');
+      };
+
+      $scope.closeProfileMenu = function () {
+        $scope.showProfile = false;
+      };
+
+      $scope.goToMain = function () {
+        alert('Navigating to Main Page');
+      };
+
+      $scope.balance = 5000; // Initial user balance
+
+      $scope.loadProducts = function () {
+        // Placeholder for Firebase loading logic
+        console.log("Load products from Firebase here.");
+        // Hardcoded fallback:
+        $scope.products = [
+          { id: 1, name: 'Intel i9', category: 'cpu', price: 500, image: 'https://via.placeholder.com/200' },
+          { id: 2, name: 'NVIDIA RTX 3090', category: 'gpu', price: 1500, image: 'https://via.placeholder.com/200' },
+          { id: 3, name: 'ASUS Motherboard', category: 'motherboard', price: 300, image: 'https://via.placeholder.com/200' },
+          { id: 4, name: 'Corsair 16GB RAM', category: 'ram', price: 100, image: 'https://via.placeholder.com/200' },
+        ];
+        $scope.filterProducts();
+      };
+
+      $scope.loadProducts();
+
+      $scope.isLoggedIn = false; // Track login state
+      $scope.balance = 1000; // Example balance for demo
+
+      // Login Functionality
+      $scope.login = function (username, password) {
+        const user = $scope.users.find(
+          (user) => user.username === username && user.password === password
+        );
+
+        if (user) {
+          $scope.isLoggedIn = true;
+          $scope.loggedInUser = user;
+          $scope.loginError = '';
+          $scope.showLogin = false;
+          $scope.showLoginForm = false;
+          $scope.notify("Login successful!");
+        } else {
+          $scope.loginError = 'Invalid username or password. Please try again.';
+        }
+      };
+
+      $scope.logout = function () {
+        $scope.isLoggedIn = false;
+        $scope.loggedInUser = null;
+        $scope.cart = [];
+        $scope.orders = [];
+      };
+
+      $scope.showLogin = false;
+      $scope.loginUsername = '';
+      $scope.loginPassword = '';
+
+      $scope.toggleProfileMenu = function () {
+        if (!$scope.isLoggedIn) {
+          $scope.showLogin = true; // Show login modal
+        } else {
+          $scope.logout(); // Log out user if already logged in
+        }
+      };
+
+      $scope.closeLogin = function () {
+        $scope.showLogin = false;
+      };
+
+      // Notifications
+      $scope.notifications = [];
+
+      $scope.notify = function (message, type = 'success') {
+        const notification = { message, type };
+        $scope.notifications.push(notification);
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+          $scope.notifications.shift();
+          $scope.$apply(); // Update scope manually
+        }, 3000);
+      };
+    });
+  </script>
+  <script>
+    // Add ripple effect to buttons
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('special-effect')) {
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.left = `${e.offsetX}px`;
+        ripple.style.top = `${e.offsetY}px`;
+        e.target.appendChild(ripple);
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      }
+    });
+  </script>
+
+  <script>
+    
+  </script>
+</body>
+</html>
