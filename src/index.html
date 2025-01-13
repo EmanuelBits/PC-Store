@@ -5,6 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PC Store</title>
   <script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
+    <!-- Firebase App (required for Firebase products) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+
+  <!-- Firebase Realtime Database -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCzIziOAUtyFqZMNFPxIaH15nyNv0972hA",
+        authDomain: "pc-store-9.firebaseapp.com",
+        databaseURL: "https://pc-store-9-default-rtdb.firebaseio.com",
+        projectId: "pc-store-9",
+        storageBucket: "pc-store-9.firebasestorage.app",
+        messagingSenderId: "34549374359",
+        appId: "1:34549374359:web:f29bb367d981c97ae478d2"
+      };
+
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+  </script>
+
   <style>
     /* General Body Styling */
     body {
@@ -493,9 +515,9 @@
     <div class="notification {{notification.type}}" ng-repeat="notification in notifications">
       {{notification.message}}
     </div>
-  </div>  
+  </div> 
 
-  <script>
+  <script>  
     angular.module('PCStoreApp', [])
     .controller('MainController', function ($scope) {
       // Initial State
@@ -620,10 +642,72 @@
         console.log("Load products from Firebase here.");
         // Hardcoded fallback:
         $scope.products = [
-          { id: 1, name: 'Intel i9', category: 'cpu', price: 500, image: 'https://via.placeholder.com/200' },
-          { id: 2, name: 'NVIDIA RTX 3090', category: 'gpu', price: 1500, image: 'https://via.placeholder.com/200' },
-          { id: 3, name: 'ASUS Motherboard', category: 'motherboard', price: 300, image: 'https://via.placeholder.com/200' },
-          { id: 4, name: 'Corsair 16GB RAM', category: 'ram', price: 100, image: 'https://via.placeholder.com/200' },
+          { id: 1, name: 'Intel i9-14900K', category: 'cpu', price: 580, image: 'https://media.icdn.hu/product/GalleryMod/2023-10/940673/resp/3089930_intel-core-i9-14900k-240ghz-lga-1700-oem.webp' },
+          { id: 2, name: 'Intel i9-14900KF', category: 'cpu', price: 560, image: 'https://lcdn.altex.ro/media/catalog/product/c/s/csai914900k_1_9369330a.jpg' },
+          { id: 3, name: 'Intel i9-13900K', category: 'cpu', price: 550, image: 'https://s13emagst.akamaized.net/products/49584/49583701/images/res_ac93fa34ded34e016467e8282ee9d721.jpg?width=720&height=720&hash=C04D1789D772212A206C30F90FB58560' },
+          { id: 4, name: 'Intel i9-13900KF', category: 'cpu', price: 530, image: 'https://s13emagst.akamaized.net/products/49584/49583701/images/res_ac93fa34ded34e016467e8282ee9d721.jpg?width=720&height=720&hash=C04D1789D772212A206C30F90FB58560' },
+          { id: 5, name: 'Intel i9-12900K', category: 'cpu', price: 480, image: 'https://s13emagst.akamaized.net/products/41223/41222783/images/res_937e53d5cd103d498012e3f716a37ffb.jpg?width=720&height=720&hash=E681543384ECD5761374CAB470D41D0C' },
+          { id: 6, name: 'Intel i7-14700K', category: 'cpu', price: 420, image: 'https://3.grgs.ro/images/products/1/2180/2694475/normal/cpu-core-i7-14700k-s1700-box-34g-bx8071514700k-s-rn3x-in-db96249fec8b72bef32e81f0a80aea1e.jpg' },
+          { id: 7, name: 'Intel i7-14700KF', category: 'cpu', price: 400, image: 'https://3.grgs.ro/images/products/1/2180/2694475/normal/cpu-core-i7-14700k-s1700-box-34g-bx8071514700k-s-rn3x-in-db96249fec8b72bef32e81f0a80aea1e.jpg' },
+          { id: 8, name: 'Intel i7-13700K', category: 'cpu', price: 380, image: 'https://s13emagst.akamaized.net/products/49584/49583703/images/res_6e2a4cb0f16202117335addccb9bb826.jpg?width=720&height=720&hash=072FEFB81E47A7D0FB67818EDDE27EA2' },
+          { id: 9, name: 'Intel i7-13700KF', category: 'cpu', price: 360, image: 'https://s13emagst.akamaized.net/products/49584/49583703/images/res_6e2a4cb0f16202117335addccb9bb826.jpg?width=720&height=720&hash=072FEFB81E47A7D0FB67818EDDE27EA2' },
+          { id: 10, name: 'Intel i7-12700K', category: 'cpu', price: 320, image: 'https://d.scdn.gr/images/sku_main_images/032106/32106143/xlarge_20220210135544_intel_core_i7_12700k_2_7ghz_epexergastis_12_pyrinon_gia_socket_1700_se_kouti.jpeg' },
+          { id: 11, name: 'Intel i7-12700KF', category: 'cpu', price: 300, image: 'https://d.scdn.gr/images/sku_main_images/032106/32106143/xlarge_20220210135544_intel_core_i7_12700k_2_7ghz_epexergastis_12_pyrinon_gia_socket_1700_se_kouti.jpeg' },
+          { id: 12, name: 'Intel i7-12700', category: 'cpu', price: 280, image: 'https://d.scdn.gr/images/sku_main_images/032106/32106143/xlarge_20220210135544_intel_core_i7_12700k_2_7ghz_epexergastis_12_pyrinon_gia_socket_1700_se_kouti.jpeg' },
+          { id: 13, name: 'Intel i7-11700K', category: 'cpu', price: 250, image: 'https://d.scdn.gr/images/sku_main_images/032106/32106143/xlarge_20220210135544_intel_core_i7_12700k_2_7ghz_epexergastis_12_pyrinon_gia_socket_1700_se_kouti.jpeg' },
+          { id: 14, name: 'Intel i7-11700KF', category: 'cpu', price: 230, image: 'https://m.media-amazon.com/images/I/61fCv2e8WCL._AC_UF894,1000_QL80_.jpg' },
+          { id: 15, name: 'Intel i7-10700K', category: 'cpu', price: 200, image: 'https://m.media-amazon.com/images/I/61fCv2e8WCL._AC_UF894,1000_QL80_.jpg' },
+          { id: 16, name: 'Intel i7-10700KF', category: 'cpu', price: 180, image: 'https://m.media-amazon.com/images/I/61fCv2e8WCL._AC_UF894,1000_QL80_.jpg' },
+          { id: 17, name: 'Intel i5-14600K', category: 'cpu', price: 320, image: 'https://m.media-amazon.com/images/I/61sE3sO1PBL._AC_UF894,1000_QL80_.jpg' },
+          { id: 18, name: 'Intel i5-13600K', category: 'cpu', price: 280, image: 'https://m.media-amazon.com/images/I/61sE3sO1PBL._AC_UF894,1000_QL80_.jpg' },
+          { id: 19, name: 'Intel i5-12600K', category: 'cpu', price: 220, image: 'https://m.media-amazon.com/images/I/61sE3sO1PBL._AC_UF894,1000_QL80_.jpg' },
+          { id: 20, name: 'Intel i5-12400', category: 'cpu', price: 180, image: 'https://m.media-amazon.com/images/I/61sE3sO1PBL._AC_UF894,1000_QL80_.jpg' },
+          { id: 21, name: 'AMD Ryzen 9 7950X', category: 'cpu', price: 590, image: 'https://4.grgs.ro/images/products/1/8524/2451320/normal/ryzen-9-7950x-45ghz-box-73e7107964673d30d0aae4978663fc53.jpg' },
+          { id: 22, name: 'AMD Ryzen 9 7900X', category: 'cpu', price: 480, image: 'https://4.grgs.ro/images/products/1/8524/2451320/normal/ryzen-9-7950x-45ghz-box-73e7107964673d30d0aae4978663fc53.jpg' },
+          { id: 23, name: 'AMD Ryzen 9 5900X', category: 'cpu', price: 350, image: 'https://4.grgs.ro/images/products/1/8524/2451320/normal/ryzen-9-7950x-45ghz-box-73e7107964673d30d0aae4978663fc53.jpg' },
+          { id: 24, name: 'AMD Ryzen 7 7800X3D', category: 'cpu', price: 450, image: 'https://s13emagst.akamaized.net/products/55095/55094716/images/res_646078caa51c58fcde8abbeb5e2c1762.jpg?width=720&height=720&hash=366A48EEFF8452B26CE0EBDFDE962356' },
+          { id: 25, name: 'AMD Ryzen 7 5800X3D', category: 'cpu', price: 300, image: 'https://s13emagst.akamaized.net/products/55095/55094716/images/res_646078caa51c58fcde8abbeb5e2c1762.jpg?width=720&height=720&hash=366A48EEFF8452B26CE0EBDFDE962356' },
+          { id: 26, name: 'AMD Ryzen 7 5700X', category: 'cpu', price: 200, image: 'https://m.media-amazon.com/images/I/71Gk9+l08iL._AC_UF894,1000_QL80_.jpg' },
+          { id: 27, name: 'AMD Ryzen 5 7600X', category: 'cpu', price: 250, image: 'https://5.grgs.ro/images/products/1/2770/2451332/normal/ryzen-5-7600x-47ghz-box-2af90e505e1db726dbcbde559865addc.jpg' },
+          { id: 28, name: 'AMD Ryzen 5 5600X', category: 'cpu', price: 180, image: 'https://5.grgs.ro/images/products/1/2770/2451332/normal/ryzen-5-7600x-47ghz-box-2af90e505e1db726dbcbde559865addc.jpg' },
+          { id: 29, name: 'AMD Ryzen 5 5500', category: 'cpu', price: 120, image: 'https://5.grgs.ro/images/products/1/2770/2451332/normal/ryzen-5-7600x-47ghz-box-2af90e505e1db726dbcbde559865addc.jpg' },
+          { id: 30, name: 'NVIDIA GeForce RTX 4090', category: 'gpu', price: 1700, image: 'https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ada/rtx-4090/geforce-ada-4090-web-og-1200x630.jpg' },
+          { id: 31, name: 'NVIDIA GeForce RTX 4080', category: 'gpu', price: 1200, image: 'https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ada/rtx-4080/geforce-ada-4080-og-1200x630.jpg' },
+          { id: 32, name: 'NVIDIA GeForce RTX 4070 Ti', category: 'gpu', price: 800, image: 'https://s13emagst.akamaized.net/products/68228/68227562/images/res_84e543df54cb14b3b3989a11a0ad6f91.png' },
+          { id: 33, name: 'NVIDIA GeForce RTX 4070', category: 'gpu', price: 600, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 34, name: 'NVIDIA GeForce RTX 4060 Ti', category: 'gpu', price: 500, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 35, name: 'NVIDIA GeForce RTX 4060', category: 'gpu', price: 400, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 36, name: 'NVIDIA GeForce RTX 4050', category: 'gpu', price: 300, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 37, name: 'NVIDIA GeForce RTX 3090', category: 'gpu', price: 1500, image: 'https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ampere/rtx-3090/geforce-rtx-3090-shop-630-d@2x.png' },
+          { id: 38, name: 'NVIDIA GeForce RTX 3080', category: 'gpu', price: 1000, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 39, name: 'NVIDIA GeForce RTX 3070 Ti', category: 'gpu', price: 800, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 40, name: 'NVIDIA GeForce RTX 3070', category: 'gpu', price: 600, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 41, name: 'NVIDIA GeForce RTX 3060 Ti', category: 'gpu', price: 500, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 42, name: 'NVIDIA GeForce RTX 3060', category: 'gpu', price: 400, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 43, name: 'NVIDIA GeForce RTX 3050', category: 'gpu', price: 300, image: 'https://m.media-amazon.com/images/I/71V4h4y892L._AC_UF894,1000_QL80_.jpg' },
+          { id: 44, name: 'AMD Radeon RX 7900 XTX', category: 'gpu', price: 1100, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 45, name: 'AMD Radeon RX 7900 XT', category: 'gpu', price: 1000, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 46, name: 'AMD Radeon RX 7800 XT', category: 'gpu', price: 900, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 47, name: 'AMD Radeon RX 7700 XT', category: 'gpu', price: 800, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 48, name: 'AMD Radeon RX 7600', category: 'gpu', price: 700, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 49, name: 'AMD Radeon RX 6700 XT', category: 'gpu', price: 600, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 50, name: 'AMD Radeon RX 6600 XT', category: 'gpu', price: 500, image: 'https://m.media-amazon.com/images/I/71i5xoL4MdL._AC_UF894,1000_QL80_.jpg' },
+          { id: 51, name: 'ASUS ROG Strix Z790-E', category: 'motherboard', price: 450, image: 'https://media.icdn.hu/product/GalleryMod/2022-09/833213/resp/2004247_asus-rog-strix-z790-e-gaming-wifi.webp' },
+          { id: 52, name: 'MSI MAG Z790 Tomahawk', category: 'motherboard', price: 350, image: 'https://1.grgs.ro/images/products/1/6995/2508479/normal/mb-msi-mag-z790-tomahawk-wifi-d5-lga1700-e3b5fdc0aefba7883a504614eba56aa0.jpg' },
+          { id: 53, name: 'Gigabyte Z790 AORUS Master', category: 'motherboard', price: 500, image: 'https://s13emagst.akamaized.net/products/50530/50529517/images/res_730731b644607601312018758c975816.jpg' },
+          { id: 54, name: 'ASRock Z790 Taichi', category: 'motherboard', price: 400, image: 'https://cdn.vexio.ro/images/products/img_202211281345/2022407/full/placa-de-baza-asrock-asrock-z790-taichi-intel-z790-lga-1700-extended-atx-3531429.jpg' },
+          { id: 55, name: 'ASUS ROG Strix B550-F', category: 'motherboard', price: 180, image: 'https://m.media-amazon.com/images/I/71W5+VXB0aL._AC_UF894,1000_QL80_.jpg' },
+          { id: 56, name: 'MSI MAG B550 Tomahawk', category: 'motherboard', price: 160, image: 'https://m.media-amazon.com/images/I/71Sh4sz5UZL._AC_UF894,1000_QL80_.jpg' },
+          { id: 57, name: 'Corsair Vengeance RGB Pro 16GB (2 x 8GB) DDR4', category: 'ram', price: 80, image: 'https://p1.akcdn.net/full/1059965430.corsair-vengeance-rgb-pro-16gb-2x8gb-ddr4-3200mhz-cmw16gx4m2c3200c16w.jpg' },
+          { id: 58, name: 'G.SKILL Trident Z Royal 32GB (2 x 16GB) DDR4', category: 'ram', price: 180, image: 'https://s13emagst.akamaized.net/products/41111/41110686/images/res_91a6599b08f7fee91a02058291c319c5.jpg?width=720&height=720&hash=91877E0B6334778D7E770AF94CC49BFF' },
+          { id: 59, name: 'Kingston Fury Beast 16GB (2 x 8GB) DDR5', category: 'ram', price: 100, image: 'https://p1.akcdn.net/full/942639699.kingston-fury-beast-16gb-2x8gb-ddr5-6000mhz-kf560c40bbk2-16.jpg' },
+          { id: 60, name: 'Corsair Dominator Platinum RGB 32GB (2 x 16GB) DDR5', category: 'ram', price: 300, image: 'https://p1.akcdn.net/full/1039336569.corsair-dominator-platinum-rgb-32gb-2x16gb-ddr5-5200mhz-cmt32gx5m2b5200z40.jpg' },
+          { id: 61, name: 'G.SKILL Ripjaws V 16GB (2 x 8GB) DDR4', category: 'ram', price: 70, image: 'https://s13emagst.akamaized.net/products/41111/41110625/images/res_bce53ab7e73d14236f68ba17c1fd44ea.jpg' },
+          { id: 62, name: 'TeamGroup T-Force Delta RGB 16GB (2 x 8GB) DDR5', category: 'ram', price: 120, image: 'https://images.teamgroupinc.com/products/memory/u-dimm/ddr5/delta-rgb/black/05.jpg' },
+          { id: 63, name: 'Crucial Ballistix 32GB (2 x 16GB) DDR4', category: 'ram', price: 150, image: 'https://m.media-amazon.com/images/I/71TPcCNRONL._AC_UF894,1000_QL80_.jpg' },
+          { id: 64, name: 'ADATA XPG Spectrix D60G 16GB (2 x 8GB) DDR4', category: 'ram', price: 90, image: 'https://m.media-amazon.com/images/I/71W5+VXB0aL._AC_UF894,1000_QL80_.jpg' },
+          { id: 65, name: 'Patriot Viper Steel 16GB (2 x 8GB) DDR4', category: 'ram', price: 60, image: 'https://m.media-amazon.com/images/I/71h4s5UZL._AC_UF894,1000_QL80_.jpg' },
+          { id: 66, name: 'HyperX Predator 16GB (2 x 8GB) DDR4', category: 'ram', price: 85, image: 'https://m.media-amazon.com/images/I/71vl5bZPExL._AC_UF894,1000_QL80_.jpg' }       
         ];
         $scope.filterProducts();
       };
@@ -705,8 +789,5 @@
     });
   </script>
 
-  <script>
-    
-  </script>
 </body>
 </html>
